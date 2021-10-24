@@ -1,0 +1,11 @@
+{
+    "name": "example",
+    "description": "",
+    "bundle": {
+        "mode": "development"
+    },
+    "main": "game.js",
+    "dependencies": {
+        "@niklauslee/ssd1306-i2c": "1.2.0"
+    }
+}
