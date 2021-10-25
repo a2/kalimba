@@ -1,5 +1,6 @@
-const { SSD1306 } = require('./ssd1306-i2c');
-const { I2C } = require('i2c');
+const { SSD1306 } = require('./ssd1306-i2c')
+const { BufferedGraphicsContext } = require('graphics')
+const { I2C } = require('i2c')
 
 const Input = {
     A: 27,
@@ -31,6 +32,14 @@ class Thumby {
         const i2c = new I2C(0, { sda: 16, scl: 17, baudrate: 1000000 })
         this.lcd = new SSD1306()
         this.lcd.setup(i2c, { width: 72, height: 40, rst: 18, address: 0x3D })
+        this.lcd.context = new BufferedGraphicsContext(this.lcd.width, this.lcd.height, {
+            rotation: this.lcd.rotation,
+            bpp: 1,
+            display: (buffer) => {
+                const hex = Array.from(buffer, byte => byte.toString(16).padStart(2, '0')).join('')
+                console.log('###DISPLAY###' + hex + '###/DISPLAY###')
+            }
+        });
 
         this.gc = this.lcd.getContext()
         this.gc.clearScreen()
@@ -46,6 +55,6 @@ class Thumby {
     }
 }
 
-module.exports.Input = Input
-module.exports.Speaker = Speaker
-module.exports.Thumby = Thumby
+exports.Input = Input
+exports.Speaker = Speaker
+exports.Thumby = Thumby

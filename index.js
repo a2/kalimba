@@ -65,9 +65,11 @@ const Commands = {
 const i2c = mcu.i2c[0]
 i2c.onStart = () => i2c.completeStart()
 i2c.onConnect = (address, mode) => i2c.completeConnect(true)
+/*
 i2c.onWriteByte = byte => {
-    console.log('onWriteByte', ('00' + byte.toString(16)).slice(-2))
+    console.log('onWriteByte', byte.toString(16).padStart(2, '0'))
     i2c.completeWrite(true)
 }
+*/
 
 sendStringToPrompt('.load')
