@@ -10,7 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-static": "^0.7.11",
+    "open": "^8.4.0",
     "rp2040js": "^0.14.3",
-    "uf2": "^1.0.0"
+    "uf2": "^1.0.0",
+    "ws": "^8.2.3"
   }
 }
