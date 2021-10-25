@@ -2,6 +2,8 @@ const { RP2040, USBCDC, ConsoleLogger, LogLevel, GPIOPinState } = require('rp204
 const { bootrom } = require('./bootrom')
 const { loadUF2 } = require('./load-uf2')
 const { flash } = require('./flash')
+const fs = require('fs')
+const path = require('path')
 
 const mcu = new RP2040()
 mcu.loadBootrom(bootrom)
@@ -48,24 +50,24 @@ process.stdin.on('data', chunk => {
     lines.forEach(sendStringToPrompt)
 })
 
-mcu.gpio[25].addListener((state, oldState) => {
-    console.log(25, { state: GPIOPinState[state], oldState: GPIOPinState[oldState] })
-})
-
-const code = `
-// Toggle the LED.
-const { LED } = require('led');
-const led = new LED(25); // LED connected to pin 25
-setInterval(() => { 
-    led.on(); 
-    delay(500);
-    led.off(); 
-}, 1000);
-`.trim()
-
+const code = fs.readFileSync(path.join(__dirname, '/example/dist/index.js'), 'utf8')
 flash(mcu, code)
 
 mcu.PC = 0x10000000
 mcu.execute()
+
+const Commands = {
+    DISPLAY_OFF: 0xAE,
+    DISPLAY_ON: 0xAF,
+    SET_START_LINE: 0x40,
+}
+
+const i2c = mcu.i2c[0]
+i2c.onStart = () => i2c.completeStart()
+i2c.onConnect = (address, mode) => i2c.completeConnect(true)
+i2c.onWriteByte = byte => {
+    console.log('onWriteByte', ('00' + byte.toString(16)).slice(-2))
+    i2c.completeWrite(true)
+}
 
 sendStringToPrompt('.load')

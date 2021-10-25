@@ -5,28 +5,25 @@ const HEADER_FLASH_SIZE = FLASH_PAGE_SIZE
 const CODE_FLASH_OFFSET = HEADER_FLASH_OFFSET + HEADER_FLASH_SIZE
 
 const flashRangeProgram = (mcu, base, data, size) => {
-    const buffer = Buffer.from(data)
+    const buffer = Buffer.from(data.buffer)
     for (let k = 0; k < size; k++) {
+        // console.log((XIP_BASE + base + k).toString(16), Buffer.from([buffer[k]]).toString('hex'))
         mcu.writeUint8(XIP_BASE + base + k, buffer[k])
     }
 }
 
-/*
 const calculateChecksum = (mcu, base, size) => {
     const modulo = (a, b) => a - Math.floor(a / b) * b
     const toUint32 = (x) => modulo(~~x, Math.pow(2, 32))
-    
+
     let checksum = 0
     for (let k = 0; k < size; k++) {
         const u8 = mcu.readUint8(XIP_BASE + base + k)
         checksum = toUint32(checksum + u8)
     }
-    
+
     return toUint32((checksum ^ 0xFFFFFFFF) + 1)
 }
-*/
-
-const calculateChecksum = () => 0
 
 const flash = (mcu, code) => {
     if (typeof code === 'string') code = Buffer.from(code, 'utf8')
@@ -46,7 +43,7 @@ const flash = (mcu, code) => {
         size -= FLASH_PAGE_SIZE
     }
 
-    if (size > 0) {
+    if (size) {
         buff8.fill(0)
         buff8.set(code.subarray(pageOffset, pageOffset + size))
         remainingDataSize = size
@@ -58,6 +55,7 @@ const flash = (mcu, code) => {
     }
 
     const buff32 = new Uint32Array(HEADER_FLASH_SIZE / 4)
+    buff32.fill(0)
     buff32[0] = codeOffset
     buff32[1] = calculateChecksum(mcu, CODE_FLASH_OFFSET, codeOffset)
     flashRangeProgram(mcu, HEADER_FLASH_OFFSET, buff32, HEADER_FLASH_SIZE)
