@@ -10,10 +10,12 @@ class Game extends Thumby {
             this.update()
         }, Math.round(1000 / MAX_FPS))
 
-        for (const [key, value] of Object.entries(Input)) {
+        for (const key of Object.keys(Input)) {
+            const value = Input[key]
             setWatch(() => this.keyDown(value), value, FALLING)
         }
 
+        this.gc.clearScreen()
         this.gc.drawText(0, 0, 'Hello, world!')
         this.gc.display()
     }
