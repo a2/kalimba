@@ -9,6 +9,7 @@ const { randomUUID } = require('crypto');
 const http = require('http');
 const statik = require('node-static');
 const open = require('open')
+const { Input } = require('./example/input')
 
 const mcu = new RP2040();
 mcu.loadBootrom(bootrom);
@@ -26,18 +27,16 @@ const sendStringToPrompt = string => (
 );
 
 cdc.onDeviceConnected = () => {
-    mcu.gpio[24].setInputValue(true);
-    mcu.gpio[27].setInputValue(true);
-    mcu.gpio[4].setInputValue(true);
-    mcu.gpio[3].setInputValue(true);
-    mcu.gpio[6].setInputValue(true);
-    mcu.gpio[5].setInputValue(true);
+    for (const pin of Object.values(Input)) {
+        mcu.gpio[pin].setInputValue(true);
+    }
 };
 
 const DIRECTIVE_DISPLAY_START = '###DISPLAY###';
 const DIRECTIVE_DISPLAY_END = '###/DISPLAY###';
 
 let lastLineOut = '';
+let lastDisplayContents = '';
 let displayContents = '';
 let displayLock = false;
 const decoder = new TextDecoder('utf8');
@@ -55,8 +54,13 @@ cdc.onSerialData = data => {
             displayContents = line.slice(index + DIRECTIVE_DISPLAY_START.length, endIndex !== -1 ? endIndex : null);
             if (endIndex !== -1) {
                 displayLock = false;
-                const message = JSON.stringify({ display: displayContents });
-                ([...clients.keys()]).forEach(ws => ws.send(message));
+
+                if (displayContents !== lastDisplayContents) {
+                    const display = Buffer.from(displayContents.split(',')).toString('base64');
+                    const message = JSON.stringify({ display });
+                    ([...clients.keys()]).forEach(ws => ws.send(message));
+                    lastDisplayContents = displayContents;
+                }
             }
 
             return;
@@ -67,8 +71,13 @@ cdc.onSerialData = data => {
             } else {
                 displayContents += line.slice(0, index);
                 displayLock = false;
-                const message = JSON.stringify({ display: displayContents });
-                ([...clients.keys()]).forEach(ws => ws.send(message));
+
+                if (displayContents !== lastDisplayContents) {
+                    const display = Buffer.from(displayContents.split(',')).toString('base64');
+                    const message = JSON.stringify({ display });
+                    ([...clients.keys()]).forEach(ws => ws.send(message));
+                    lastDisplayContents = displayContents;
+                }
             }
 
             return;
@@ -126,9 +135,19 @@ wss.on('connection', ws => {
         // const metadata = clients.get(ws);
         // console.log(metadata.id, message);
 
-        if (message.display) {
-            const display = displayContents || null;
+        if (message.display && displayContents) {
+            const display = Buffer.from(displayContents.split(',')).toString('base64');
             ws.send(JSON.stringify({ display }));
+        }
+
+        if (message.up) {
+            const pin = Input[message.up];
+            if (pin) mcu.gpio[pin].setInputValue(true);
+        }
+
+        if (message.down) {
+            const pin = Input[message.down];
+            if (pin) mcu.gpio[pin].setInputValue(false);
         }
     });
 

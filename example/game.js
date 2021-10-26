@@ -3,31 +3,43 @@ const { Input, Speaker, Thumby } = require('./thumby')
 const MAX_FPS = 30
 
 class Game extends Thumby {
+    init() {
+        super.init();
+
+        this.x = 0;
+        this.y = 0;
+    }
+
     start() {
-        this.init()
+        this.init();
 
         this.updateTimer = setInterval(() => {
-            this.update()
-        }, Math.round(1000 / MAX_FPS))
+            this.update();
+        }, Math.round(1000 / MAX_FPS));
 
-        for (const key of Object.keys(Input)) {
-            const value = Input[key]
-            setWatch(() => this.keyDown(value), value, FALLING)
+        for (const pin of Object.values(Input)) {
+            setWatch(() => this.keyDown(pin), pin, FALLING);
+            setWatch(() => this.keyUp(pin), pin, RISING);
         }
 
-        this.gc.clearScreen()
-        this.gc.drawText(0, 0, 'Hello, world!')
-        this.gc.display()
+        this.update();
     }
 
     keyDown(key) {
-
+        if (key === Input.UP) this.y -= 1;
+        if (key === Input.DOWN) this.y += 1;
+        if (key === Input.RIGHT) this.x += 1;
+        if (key === Input.LEFT) this.x -= 1;
     }
 
-    update() {
+    keyUp(key) { }
 
+    update() {
+        this.gc.clearScreen();
+        this.gc.drawText(this.x, this.y, 'Hello, world!');
+        this.gc.display();
     }
 }
 
-const game = new Game()
-game.start()
+const game = new Game();
+game.start();
