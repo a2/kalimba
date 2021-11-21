@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-static": "^0.7.11",
-    "open": "^8.4.0",
+    "buffer": "^6.0.3",
     "rp2040js": "^0.14.3",
-    "uf2": "^1.0.0",
-    "ws": "^8.2.3"
+    "uf2": "^1.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.60.0",
+    "webpack-cli": "^4.9.1"
   }
 }

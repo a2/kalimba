@@ -3,4 +3,5 @@
     width: 216px;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+    background: black;
 }
