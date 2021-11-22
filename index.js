@@ -11,7 +11,7 @@ async function run(code) {
     const mcu = new RP2040();
     mcu.loadBootrom(bootrom);
     mcu.logger = new ConsoleLogger(LogLevel.Error);
-    await loadUF2('./kaluma-rpi-pico-1.0.0-beta.6.uf2', mcu);
+    await loadUF2('./kaluma-rpi-pico-1.0.0-beta.7.uf2', mcu);
 
     const cdc = new USBCDC(mcu.usbCtrl);
     const sendBufferToPrompt = buffer => {

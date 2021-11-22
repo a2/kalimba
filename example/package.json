@@ -5,7 +5,8 @@
     "mode": "development"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack",
+    "watch": "webpack --watch"
   },
   "devDependencies": {
     "webpack": "^5.59.1",

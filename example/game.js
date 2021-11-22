@@ -6,8 +6,7 @@ class Game extends Thumby {
     init() {
         super.init();
 
-        this.x = 0;
-        this.y = 0;
+        this.bit = true;
     }
 
     start() {
@@ -16,16 +15,14 @@ class Game extends Thumby {
     }
 
     update() {
-        if (this.input(Input.UP)) this.y -= 1;
-        if (this.input(Input.DOWN)) this.y += 1;
-        if (this.input(Input.RIGHT)) this.x += 1;
-        if (this.input(Input.LEFT)) this.x -= 1;
+        this.bit = !this.bit;
 
         this.gc.clearScreen();
-        this.gc.drawText(this.x, this.y, 'hi!');
+        if (this.bit) this.gc.drawText(1, 1, 'hi!');
+        console.log(this.bit);
         this.gc.display();
 
-        setTimeout(() => this.update(), 0);
+        this.update();
     }
 }
 

@@ -1,11 +1,29 @@
-const path = require('path')
+const path = require('path');
+const HtmlPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+    mode: 'development',
     entry: './index.js',
-    mode: 'production',
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
+    devServer: {
+        static: [
+            { directory: path.join(__dirname, 'static') },
+            { directory: path.join(__dirname, 'dist') }
+        ],
+    },
+    plugins: [
+        new HtmlPlugin({
+            title: 'Kaluma ❤️ Thumby',
+            template: 'static/index.html',
+        }),
+        new CopyPlugin({
+            patterns: [{ from: 'static', to: 'dist' }]
+        }),
+    ],
     output: {
-        path: path.resolve(__dirname, 'static'),
-        filename: 'browser.js'
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
 }
