@@ -47,7 +47,7 @@ async function run(code) {
 
     const i2c = mcu.i2c[0];
     i2c.onStart = () => i2c.completeStart();
-    i2c.onConnect = (address, mode) => i2c.completeConnect(true);
+    i2c.onConnect = () => i2c.completeConnect(true);
 
     let buffer = [];
     let displayLock = false;
@@ -61,11 +61,10 @@ async function run(code) {
         }
 
         if (displayLock && buffer.length == 363) {
-            parseDisplay(canvas, [
-                ...buffer.slice(1, 128),
-                ...buffer.slice(130, 257),
-                ...buffer.slice(259),
-            ])
+            buffer.splice(258, 1);
+            buffer.splice(129, 1);
+            buffer.splice(0, 1);
+            parseDisplay(canvas, buffer);
             displayLock = false;
             buffer = [];
         }
