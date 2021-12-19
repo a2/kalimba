@@ -15,10 +15,10 @@ module.exports = {
     plugins: [
         new HtmlPlugin({
             title: 'Kaluma ❤️ Thumby',
-            template: 'static/index.html',
+            template: 'index.html',
         }),
         new CopyPlugin({
-            patterns: [{ from: 'static', to: 'dist' }]
+            patterns: [{ from: 'static', to: '.' }]
         }),
     ],
     output: {

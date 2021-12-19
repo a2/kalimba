@@ -1,6 +1,4 @@
 node_modules
 *.uf2
 .parcel-cache
-static/browser.js
-static/browser.js.LICENSE.txt
-static/browser.js.map
+dist/
