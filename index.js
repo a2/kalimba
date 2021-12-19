@@ -1,7 +1,6 @@
 const { RP2040, USBCDC, ConsoleLogger, LogLevel } = require('rp2040js');
 const { bootrom } = require('./bootrom');
 const { loadUF2 } = require('./load-uf2');
-const { flash } = require('./flash');
 const { Input } = require('./example/input');
 const { Buffer } = require('buffer');
 
@@ -11,11 +10,11 @@ async function run(code) {
     const mcu = new RP2040();
     mcu.loadBootrom(bootrom);
     mcu.logger = new ConsoleLogger(LogLevel.Error);
-    await loadUF2('./kaluma-rp2-pico-1.0.0-beta.9.uf2', mcu);
+    await loadUF2('./kaluma-rp2-pico-1.0.0-beta.10.uf2', mcu);
 
     const cdc = new USBCDC(mcu.usbCtrl);
     const sendBufferToPrompt = buffer => {
-        for (const byte of buffer) {
+        for (let byte of buffer) {
             cdc.sendSerialByte(byte);
         }
     };
@@ -24,7 +23,7 @@ async function run(code) {
     );
 
     cdc.onDeviceConnected = () => {
-        for (const pin of Object.values(Input)) {
+        for (let pin of Object.values(Input)) {
             mcu.gpio[pin].setInputValue(true);
         }
     };
@@ -38,10 +37,10 @@ async function run(code) {
         lastLineOut = lines.pop();
         lines.forEach(line => {
             console.log(line);
-        })
+        });
     }
 
-    flash(mcu, code);
+    mcu.flash.set(Buffer.from(code + '\x00', 'utf8'), 0x100000);
     mcu.PC = 0x10000000;
     mcu.execute();
 
@@ -120,19 +119,16 @@ function parseDisplay(canvas, data) {
         const key = keyMap[event.code];
         if (key) {
             const down = event.type === 'keydown';
-            const type = down ? 'down' : 'up';
-
-            if (down == !!downKeys[key])
+            if (down == downKeys[key]) {
                 return;
-            if (down)
-                downKeys[key] = true;
-            else
-                delete downKeys[key];
+            }
+
+            downKeys[key] = down;
 
             const pin = Input[key];
             mcu.gpio[pin].setInputValue(!down);
         }
     };
-    document.addEventListener('keydown', handler)
-    document.addEventListener('keyup', handler)
+    document.addEventListener('keydown', handler);
+    document.addEventListener('keyup', handler);
 })();
