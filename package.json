@@ -12,14 +12,14 @@
   "license": "ISC",
   "dependencies": {
     "buffer": "^6.0.3",
-    "rp2040js": "^0.14.3",
+    "rp2040js": "^0.14.6",
     "uf2": "^1.0.0"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^10.0.0",
+    "copy-webpack-plugin": "^10.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.60.0",
+    "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.5.0"
+    "webpack-dev-server": "^4.6.0"
   }
 }

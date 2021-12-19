@@ -1,4 +1,4 @@
-const { RP2040, USBCDC, ConsoleLogger, LogLevel, GPIOPinState } = require('rp2040js');
+const { RP2040, USBCDC, ConsoleLogger, LogLevel } = require('rp2040js');
 const { bootrom } = require('./bootrom');
 const { loadUF2 } = require('./load-uf2');
 const { flash } = require('./flash');
@@ -11,7 +11,7 @@ async function run(code) {
     const mcu = new RP2040();
     mcu.loadBootrom(bootrom);
     mcu.logger = new ConsoleLogger(LogLevel.Error);
-    await loadUF2('./kaluma-rpi-pico-1.0.0-beta.7.uf2', mcu);
+    await loadUF2('./kaluma-rp2-pico-1.0.0-beta.9.uf2', mcu);
 
     const cdc = new USBCDC(mcu.usbCtrl);
     const sendBufferToPrompt = buffer => {
@@ -29,56 +29,15 @@ async function run(code) {
         }
     };
 
-    const DIRECTIVE_DISPLAY_START = '###DISPLAY###';
-    const DIRECTIVE_DISPLAY_END = '###/DISPLAY###';
-
     let lastLineOut = '';
-    let lastDisplayContents = '';
-    let displayContents = '';
-    let displayLock = false;
     const decoder = new TextDecoder('utf8');
-
     cdc.onSerialData = data => {
         const chunk = decoder.decode(data);
         const lines = chunk.split('\n');
         lines[0] = lastLineOut + lines[0];
         lastLineOut = lines.pop();
         lines.forEach(line => {
-            let index = line.indexOf(DIRECTIVE_DISPLAY_START);
-            if (index !== -1) {
-                let endIndex = line.indexOf(DIRECTIVE_DISPLAY_END);
-                displayLock = true;
-                displayContents = line.slice(index + DIRECTIVE_DISPLAY_START.length, endIndex !== -1 ? endIndex : null);
-                if (endIndex !== -1) {
-                    displayLock = false;
-
-                    if (displayContents !== lastDisplayContents) {
-                        const display = Buffer.from(displayContents.split(','));
-                        parseDisplay(canvas, display);
-                        lastDisplayContents = displayContents;
-                    }
-                }
-
-                return;
-            } else if (displayLock) {
-                index = line.indexOf(DIRECTIVE_DISPLAY_END);
-                if (index === -1) {
-                    displayContents += line;
-                } else {
-                    displayContents += line.slice(0, index);
-                    displayLock = false;
-
-                    if (displayContents !== lastDisplayContents) {
-                        const display = Buffer.from(displayContents.split(','));
-                        parseDisplay(canvas, display);
-                        lastDisplayContents = displayContents;
-                    }
-                }
-
-                return;
-            }
-
-            console.log('>', line);
+            console.log(line);
         })
     }
 
@@ -86,25 +45,37 @@ async function run(code) {
     mcu.PC = 0x10000000;
     mcu.execute();
 
-    const Commands = {
-        DISPLAY_OFF: 0xAE,
-        DISPLAY_ON: 0xAF,
-        SET_START_LINE: 0x40,
-    };
-
     const i2c = mcu.i2c[0];
     i2c.onStart = () => i2c.completeStart();
     i2c.onConnect = (address, mode) => i2c.completeConnect(true);
-    /*
+
+    let buffer = [];
+    let displayLock = false;
     i2c.onWriteByte = byte => {
-        console.log('onWriteByte', byte.toString(16).padStart(2, '0'));
+        buffer.push(byte);
+        if (!displayLock && buffer.length > 4) buffer.shift();
+
+        if (buffer[0] === 0 && buffer[1] === 28 && buffer[2] === 0 && buffer[3] === 99) {
+            displayLock = true;
+            buffer = [];
+        }
+
+        if (displayLock && buffer.length == 363) {
+            parseDisplay(canvas, [
+                ...buffer.slice(1, 128),
+                ...buffer.slice(130, 257),
+                ...buffer.slice(259),
+            ])
+            displayLock = false;
+            buffer = [];
+        }
+
         i2c.completeWrite(true);
     };
-    */
 
     sendStringToPrompt('.load');
 
-    return { mcu, cdc, i2c };
+    return { mcu, cdc };
 };
 
 function parseDisplay(canvas, data) {
