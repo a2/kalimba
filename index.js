@@ -1,7 +1,7 @@
 const { RP2040, USBCDC, ConsoleLogger, LogLevel } = require('rp2040js');
 const { bootrom } = require('./bootrom');
 const { loadUF2 } = require('./load-uf2');
-const { Input } = require('./example/input');
+const { Input } = require('./input');
 const { Buffer } = require('buffer');
 
 const canvas = document.querySelector('#display');
