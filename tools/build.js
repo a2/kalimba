@@ -1,6 +1,10 @@
 import esbuild from "esbuild";
 import fs from "fs";
 
+if (process.stdin.isTTY) {
+  throw new Error("Expected data from stdin");
+}
+
 const code = fs.readFileSync(process.stdin.fd, "utf8");
 const serve = process.argv.indexOf("--serve") !== -1;
 const watch = process.argv.indexOf("--watch") !== -1;
