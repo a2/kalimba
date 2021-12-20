@@ -13,6 +13,10 @@
   },
   "author": "Alexsander Akers <me@a2.io>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "github:a2/kalimba"
+  },
   "dependencies": {
     "buffer": "^6.0.3",
     "esbuild": "^0.14.5",
