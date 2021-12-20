@@ -1,6 +1,7 @@
 import { RP2040 } from "rp2040js";
 import { decodeBlock } from "uf2";
 
+// Based on https://git.io/JDQ3t
 export default async function loadUF2(filename: string, rp2040: RP2040) {
   const buffer = await fetch(filename).then((res) => res.arrayBuffer());
   const fileData = new Uint8Array(buffer);
