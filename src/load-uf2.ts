@@ -1,7 +1,8 @@
-const { decodeBlock } = require('uf2');
+import { RP2040 } from "rp2040js";
+import { decodeBlock } from "uf2";
 
-exports.loadUF2 = async function loadUF2(filename, rp2040) {
-  const buffer = await fetch(filename).then(res => res.arrayBuffer());
+export default async function loadUF2(filename: string, rp2040: RP2040) {
+  const buffer = await fetch(filename).then((res) => res.arrayBuffer());
   const fileData = new Uint8Array(buffer);
 
   let fileIndex = 0;
@@ -11,4 +12,4 @@ exports.loadUF2 = async function loadUF2(filename, rp2040) {
     rp2040.flash.set(payload, flashAddress - 0x10000000);
     fileIndex += 512;
   }
-};
+}

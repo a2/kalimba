@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TinyPlane</title>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        background: #3a3a3a;
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+      }
+
+      canvas {
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        -webkit-user-select: none;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        outline: none;
+        user-select: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <svg width="130" height="213">
+      <defs>
+        <linearGradient id="c" x1="50%" x2="50%" y1="0%" y2="100%">
+          <stop offset="0%" stop-color="#333" />
+          <stop offset="100%" stop-color="#666" />
+        </linearGradient>
+        <linearGradient id="d" x1="50%" x2="50%" y1="0%" y2="100%">
+          <stop offset="0%" stop-color="#666" />
+          <stop offset="100%" stop-color="#333" />
+        </linearGradient>
+        <linearGradient id="e" x1="100%" x2="0%" y1="50%" y2="50%">
+          <stop offset="0%" stop-color="#333" />
+          <stop offset="100%" stop-color="#666" />
+        </linearGradient>
+        <linearGradient id="f" x1="100%" x2="0%" y1="50%" y2="50%">
+          <stop offset="0%" stop-color="#666" />
+          <stop offset="100%" stop-color="#333" />
+        </linearGradient>
+        <radialGradient id="g" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+          <stop offset="0%" stop-color="#EB0000" />
+          <stop offset="100%" stop-opacity="10%" />
+        </radialGradient>
+      </defs>
+      <g fill="none" fill-rule="evenodd">
+        <path
+          fill="#FFF"
+          stroke="#979797"
+          d="M122 .5a7.5 7.5 0 0 1 7.5 7.5v183a21.4 21.4 0 0 1-21.5 21.5H8A7.5 7.5 0 0 1 .5 205V8A7.5 7.5 0 0 1 8 .5Z"
+        />
+        <path
+          stroke="#979797"
+          d="M105 17.5a7.5 7.5 0 0 1 7.5 7.5v57A13.5 13.5 0 0 1 99 95.5H25a7.5 7.5 0 0 1-7.5-7.5V25a7.5 7.5 0 0 1 7.5-7.5Z"
+        />
+        <path
+          fill="#D8D8D8"
+          stroke="#979797"
+          d="M44 112.5a1.5 1.5 0 0 1 1.5 1.5v12.5H58a1.5 1.5 0 0 1 1.5 1.5v15a1.5 1.5 0 0 1-1.5 1.5H45.5V158a1.5 1.5 0 0 1-1.5 1.5H29a1.5 1.5 0 0 1-1.5-1.5v-13.5H14a1.5 1.5 0 0 1-1.5-1.5v-15a1.5 1.5 0 0 1 1.5-1.5h13.5V114a1.5 1.5 0 0 1 1.5-1.5Z"
+        />
+        <path
+          fill="#666"
+          stroke="#000"
+          d="M43.5 114.5v14h14v14h-14v15h-14v-15h-15v-14h15v-14h14Z"
+        />
+        <path fill="#333" d="M27.5 27.5h73v51h-73z" />
+        <g transform="translate(75 129)">
+          <circle cx="11" cy="11" r="10.5" fill="#D8D8D8" stroke="#979797" />
+          <circle cx="11" cy="11" r="8.5" fill="#EB0000" stroke="#000" />
+          <circle
+            id="a"
+            cx="11"
+            cy="11"
+            r="9"
+            fill="url(#g)"
+            opacity="0"
+            style="mix-blend-mode: color-burn"
+          />
+        </g>
+        <g transform="translate(97 115)">
+          <circle cx="11" cy="11" r="10.5" fill="#D8D8D8" stroke="#979797" />
+          <circle cx="11" cy="11" r="8.5" fill="#EB0000" stroke="#000" />
+          <circle
+            id="b"
+            cx="11"
+            cy="11"
+            r="9"
+            fill="url(#g)"
+            opacity="0"
+            style="mix-blend-mode: color-burn"
+          />
+        </g>
+        <circle cx="108" cy="191" r="13.5" stroke="#979797" />
+        <circle cx="108" cy="191" r="7.5" stroke="#979797" />
+        <rect
+          width="16"
+          height="7"
+          x="46.5"
+          y="171.5"
+          fill="#D8D8D8"
+          stroke="#979797"
+          rx="3.5"
+          transform="rotate(-30 54.5 175)"
+        />
+        <rect
+          width="16"
+          height="7"
+          x="67.5"
+          y="171.5"
+          fill="#D8D8D8"
+          stroke="#979797"
+          rx="3.5"
+          transform="rotate(-30 75.5 175)"
+        />
+        <path id="up" fill="url(#c)" d="M30 115h13v14H30z" opacity="0" />
+        <path id="down" fill="url(#d)" d="M30 143h13v14H30z" opacity="0" />
+        <path id="right" fill="url(#e)" d="M43 129h14v13H43z" opacity="0" />
+        <path id="left" fill="url(#f)" d="M15 129h14v13H15z" opacity="0" />
+        <foreignObject width="72" height="40" x="28" y="33">
+          <canvas width="72" height="40" />
+        </foreignObject>
+      </g>
+    </svg>
+
+    <script src="bundle.js" type="module"></script>
+  </body>
+</html>

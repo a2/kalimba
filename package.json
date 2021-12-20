@@ -1,25 +1,31 @@
 {
-  "name": "kaluma",
+  "name": "kalimba",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve --open"
+    "build": "node tools/build.js",
+    "check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "prepare": "husky install",
+    "serve": "node tools/build.js --serve"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Alexsander Akers <me@a2.io>",
+  "license": "MIT",
   "dependencies": {
     "buffer": "^6.0.3",
     "rp2040js": "^0.14.6",
     "uf2": "^1.0.0"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^10.2.0",
-    "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.65.0",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.6.0"
+    "esbuild": "^0.14.5",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
+    "prettier": "2.5.1",
+    "typescript": "^4.5.4"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
