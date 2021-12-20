@@ -23,18 +23,18 @@ declare module "i2c" {
     ): number;
     read(length: number, address: number, timeout?: number): Uint8Array | null;
     memWrite(
-      memAddress: number,
       data: Uint8Array | string,
       address: number,
-      memAddr16bit?: 0 | 1,
+      memAddress: number,
+      memAddressSize?: 8 | 16,
       timeout?: number,
       count?: number
     ): number;
     memRead(
-      memAddress: number,
       length: number,
       address: number,
-      memAddr16bit?: 0 | 1,
+      memAddress: number,
+      memAddressSize?: 8 | 16,
       timeout?: number
     ): Uint8Array | null;
     close(): void;
