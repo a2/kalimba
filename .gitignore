@@ -125,6 +125,7 @@ out
 .yarn/install-state.gz
 .pnp.*
 
+/.vscode
 /dist/bundle.js
 /dist/bundle.js.map
 /dist/code.js
