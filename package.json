@@ -15,11 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "buffer": "^6.0.3",
+    "esbuild": "^0.14.5",
     "rp2040js": "^0.14.6",
     "uf2": "^1.0.0"
   },
   "devDependencies": {
-    "esbuild": "^0.14.5",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.2",
     "prettier": "2.5.1",
