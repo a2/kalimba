@@ -4,8 +4,6 @@ const { loadUF2 } = require('./load-uf2');
 const { Input } = require('./input');
 const { Buffer } = require('buffer');
 
-const canvas = document.querySelector('#display');
-
 async function run(code) {
     const mcu = new RP2040();
     mcu.loadBootrom(bootrom);
@@ -63,7 +61,7 @@ async function run(code) {
             buffer.splice(258, 1);
             buffer.splice(129, 1);
             buffer.splice(0, 1);
-            parseDisplay(canvas, buffer);
+            parseDisplay(buffer);
             displayLock = false;
             buffer = [];
         }
@@ -76,18 +74,20 @@ async function run(code) {
     return { mcu, cdc };
 };
 
-function parseDisplay(canvas, data) {
+const canvas = document.querySelector('canvas');
+
+function parseDisplay(data) {
     if (!data) return;
 
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#fff';
 
     for (let y = 0; y < Math.ceil(canvas.height / 8); y++) {
         for (let x = 0; x < canvas.width; x++) {
             const byte = data[y * canvas.width + x];
             for (let dy = 0; dy < 8; dy++) {
-                if (byte & (1 << dy)) ctx.fillRect(x, 8 * y + dy, 1, 1);
+                ctx.fillStyle = (byte & (1 << dy)) ? '#fff' : '#000';
+                ctx.fillRect(x, 8 * y + dy, 1, 1);
             }
         }
     }
@@ -115,20 +115,32 @@ function parseDisplay(canvas, data) {
         'KeyX': 'B',
         'Period': 'B',
     };
-    const handler = event => {
-        const key = keyMap[event.code];
-        if (key) {
-            const down = event.type === 'keydown';
-            if (down == downKeys[key]) {
-                return;
-            }
-
-            downKeys[key] = down;
-
-            const pin = Input[key];
-            mcu.gpio[pin].setInputValue(!down);
-        }
+    const svg = document.querySelector('svg');
+    const elementMap = {
+        'A': svg.querySelector('#a'),
+        'B': svg.querySelector('#b'),
+        'UP': svg.querySelector('#up'),
+        'DOWN': svg.querySelector('#down'),
+        'RIGHT': svg.querySelector('#right'),
+        'LEFT': svg.querySelector('#left'),
     };
-    document.addEventListener('keydown', handler);
-    document.addEventListener('keyup', handler);
+    
+    const processButton = (key, down) => {
+        if (!key || down == downKeys[key]) return;
+        downKeys[key] = down;
+
+        const pin = Input[key];
+        mcu.gpio[pin].setInputValue(!down);
+
+        elementMap[key].style.opacity = down ? 1 : 0;
+    };
+
+    const keyHandler = event => processButton(keyMap[event.code], event.type === 'keydown');
+    document.addEventListener('keydown', keyHandler);
+    document.addEventListener('keyup', keyHandler);
+
+    Object.entries(elementMap).forEach(([key, element]) => {
+        element.addEventListener('mousedown', () => processButton(key, true));
+        element.addEventListener('mouseup', () => processButton(key, false));
+    });
 })();

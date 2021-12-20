@@ -1,7 +1,14 @@
-#display {
-    height: 120px;
-    width: 216px;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    background: black;
+body {
+  padding: 0;
+  margin: 0;
+  background: #3a3a3a;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
