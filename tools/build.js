@@ -21,16 +21,9 @@ const buildOptions = {
 };
 
 if (serve) {
-  esbuild
-    .serve(
-      {
-        servedir: "dist",
-      },
-      buildOptions
-    )
-    .then((result) => {
-      console.log(`Serving on port ${result.port}...`);
-    });
+  esbuild.serve({ servedir: "dist" }, buildOptions).then((result) => {
+    console.log(`Serving on port ${result.port}...`);
+  });
 } else {
   esbuild.build(buildOptions).catch(() => process.exit(1));
 }
