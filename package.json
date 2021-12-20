@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+  "bin": "tools/serve.js",
   "scripts": {
-    "build": "node tools/build.js",
+    "build": "node tools/serve.js --build",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "serve": "node tools/build.js --serve"
+    "serve": "node tools/serve.js"
   },
   "author": "Alexsander Akers <me@a2.io>",
   "license": "MIT",
