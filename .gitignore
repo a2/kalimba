@@ -126,6 +126,6 @@ out
 .pnp.*
 
 /.vscode
-/dist/bundle.js
-/dist/bundle.js.map
-/dist/code.js
+/dist/js
+/dist/js/bundle.js
+/dist/js/bundle.js.map

@@ -2,9 +2,10 @@
   "compilerOptions": {
     "allowJs": false,
     "baseUrl": ".",
+    "declaration": true,
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./dist/",
+    "outDir": "./dist/js/",
     "sourceMap": true,
     "strict": true,
     "target": "ESNext"

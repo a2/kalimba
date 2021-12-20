@@ -1,15 +1,16 @@
 {
   "name": "kalimba",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
-  "main": "src/index.ts",
-  "bin": "tools/serve.js",
+  "main": "dist/js/index.js",
+  "bin": "bin/kalimba.js",
+  "types": "dist/js/index.d.ts",
   "scripts": {
-    "build": "node tools/serve.js --build",
+    "build": "tsc",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "serve": "node tools/serve.js"
+    "prepublishOnly": "tsc"
   },
   "author": "Alexsander Akers <me@a2.io>",
   "license": "MIT",
