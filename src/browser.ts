@@ -10,7 +10,7 @@ async function run() {
   const mcu = new RP2040();
   mcu.loadBootrom(bootrom);
   mcu.logger = new ConsoleLogger(LogLevel.Error);
-  await loadUF2("./kaluma-rp2-pico-1.0.0-beta.11.uf2", mcu);
+  await loadUF2("./kaluma-rp2-pico-1.0.0-beta.12.uf2", mcu);
 
   const cdc = new USBCDC(mcu.usbCtrl);
   const sendBufferToPrompt = (buffer: Buffer) => {
