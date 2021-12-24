@@ -4,7 +4,7 @@ const bmpJson = require("./bmp-json");
 module.exports = (options, loaderContext, content) => {
   return new Promise((resolve, reject) => {
     const compiler = webpack({
-      mode: "production",
+      mode: loaderContext.mode,
       entry: loaderContext.resourcePath,
       module: {
         rules: [
@@ -56,6 +56,7 @@ module.exports = (options, loaderContext, content) => {
         if (err.details) {
           console.error(err.details);
         }
+        reject(err);
         return;
       }
 
@@ -70,7 +71,8 @@ module.exports = (options, loaderContext, content) => {
       }
 
       resolve({
-        code: "module.exports = " + JSON.stringify(main),
+        cacheable: true,
+        code: main,
         sourceMap: mainMap,
         dependencies: [loaderContext.resourcePath],
       });

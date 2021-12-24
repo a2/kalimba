@@ -6,7 +6,7 @@ const Speaker = 28;
 export default class Thumby {
   static Speaker = Speaker;
   static Input = Input;
-  static Button = class Button {
+  static Button = class {
     pin;
     lastState;
 

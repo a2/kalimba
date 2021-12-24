@@ -18,6 +18,7 @@ module.exports = {
       },
       {
         resourceQuery: /build/,
+        type: "asset/resource",
         use: {
           loader: "val-loader",
           options: {

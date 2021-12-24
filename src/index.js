@@ -1,6 +1,6 @@
 import Kalimba from "./kalimba";
-import kaluma from "../static/kaluma-rp2-pico-1.0.0-beta.12.uf2?asset";
-import program from "./tinyplane?build";
+import firmwareSource from "../static/kaluma-rp2-pico-1.0.0-beta.12.uf2?asset";
+import programSource from "./tinyplane?build";
 
 const keyMap = {
   // WASD
@@ -25,9 +25,11 @@ const keyMap = {
 
 (async () => {
   const canvas = document.getElementsByTagName("canvas")[0];
-  const firmware = await fetch(kaluma.toString()).then((res) =>
-    res.arrayBuffer()
-  );
+  const [firmware, program] = await Promise.all([
+    fetch(firmwareSource.toString()).then((res) => res.arrayBuffer()),
+    fetch(programSource.toString()).then((res) => res.text()),
+  ]);
+
   const kalimba = new Kalimba(canvas, firmware, program);
   kalimba.start();
 
@@ -41,7 +43,14 @@ const keyMap = {
     LEFT: svg.querySelector("#left"),
   };
 
-  const downKeys = {};
+  const downKeys = {
+    A: false,
+    B: false,
+    UP: false,
+    DOWN: false,
+    RIGHT: false,
+    LEFT: false,
+  };
 
   const processButton = (key, down) => {
     if (!key || down == downKeys[key]) return;
