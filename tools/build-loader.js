@@ -69,17 +69,6 @@ module.exports = (options, loaderContext, content) => {
         console.warn(info.warnings);
       }
 
-      // console.log(mainMap.sources);
-      // mainMap.sources = mainMap.sources.map((source) => {
-      //   return source.replace(/\/\/.*?\//, "//");
-      //   const url = new URL(source);
-      //   const path = url.pathname.split("/").slice(1);
-      //   url.host = path[0];
-      //   url.pathname = path.slice(1).join("/");
-      //   return url.toString();
-      // });
-      // console.log(mainMap.sources);
-
       resolve({
         code: "module.exports = " + JSON.stringify(main),
         sourceMap: mainMap,

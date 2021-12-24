@@ -12,7 +12,7 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "pngjs": "^6.0.0",
-    "rp2040js": "^0.14.6",
+    "rp2040js": "^0.14.7",
     "uf2": "^1.0.0"
   },
   "devDependencies": {

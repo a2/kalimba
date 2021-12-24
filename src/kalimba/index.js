@@ -1,4 +1,5 @@
-import { RP2040, USBCDC, ConsoleLogger, LogLevel } from "rp2040js";
+const { RP2040, USBCDC, ConsoleLogger, LogLevel } = require("rp2040js");
+
 import { Buffer } from "buffer/";
 import { decodeBlock } from "uf2";
 
@@ -54,7 +55,7 @@ export default class Kalimba {
     };
     this.cdc = cdc;
 
-    this.#loadFirmware(firmware);
+    this.loadFirmware(firmware);
     mcu.flash.set(Buffer.from(program + "\0", "utf8"), 0x100000);
     mcu.PC = 0x10000000;
 
@@ -82,7 +83,7 @@ export default class Kalimba {
         buffer.splice(258, 1);
         buffer.splice(129, 1);
         buffer.splice(0, 1);
-        this.#parseDisplay(buffer);
+        this.parseDisplay(buffer);
         displayLock = false;
         buffer = [];
       }
@@ -96,7 +97,7 @@ export default class Kalimba {
   }
 
   // Based on https://git.io/JDQ3t
-  #loadFirmware(buffer) {
+  loadFirmware(buffer) {
     const fileData = new Uint8Array(buffer);
 
     let fileIndex = 0;
@@ -118,7 +119,7 @@ export default class Kalimba {
     this.sendBufferToPrompt(Buffer.from(string + "\r", "utf8"));
   }
 
-  #parseDisplay(data) {
+  parseDisplay(data) {
     const ctx = this.canvas.getContext("2d");
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -134,6 +135,7 @@ export default class Kalimba {
   }
 
   setButton(button, pressed) {
-    this.mcu.gpio[button].setInputValue(!pressed);
+    const pin = typeof button === 'string' ? Input[button] : button;
+    this.mcu.gpio[pin].setInputValue(!pressed);
   }
 }
