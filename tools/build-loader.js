@@ -39,14 +39,12 @@ module.exports = (options, loaderContext, content) => {
       output: {
         chunkFormat: "commonjs",
       },
-      devtool: "source-map",
+      devtool: false,
     });
 
-    let main;
-    let mainMap;
+    let source;
     compiler.hooks.shouldEmit.tap("build-loader", (compilation) => {
-      main = compilation.getAsset("main.js").source.source();
-      mainMap = JSON.parse(compilation.getAsset("main.js.map").source.source());
+      source = compilation.getAsset("main.js").source.source();
       return false;
     });
 
@@ -72,8 +70,7 @@ module.exports = (options, loaderContext, content) => {
 
       resolve({
         cacheable: true,
-        code: main,
-        sourceMap: mainMap,
+        code: source,
         dependencies: [loaderContext.resourcePath],
       });
     });

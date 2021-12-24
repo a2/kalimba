@@ -13,10 +13,6 @@ module.exports = {
         type: "asset/resource",
       },
       {
-        resourceQuery: /raw/,
-        type: "asset/source",
-      },
-      {
         resourceQuery: /build/,
         type: "asset/resource",
         use: {

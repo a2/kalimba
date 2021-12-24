@@ -1,37 +1,29 @@
 import Kalimba from "./kalimba";
+
 import firmwareSource from "../static/kaluma-rp2-pico-1.0.0-beta.12.uf2?asset";
 import programSource from "./tinyplane?build";
 
-const keyMap = {
-  // WASD
-  KeyW: "UP",
-  KeyA: "LEFT",
-  KeyS: "DOWN",
-  KeyD: "RIGHT",
+const installHandlers = (kalimba) => {
+  const keyMap = {
+    // WASD
+    KeyW: "UP",
+    KeyA: "LEFT",
+    KeyS: "DOWN",
+    KeyD: "RIGHT",
 
-  // Arrow keys
-  ArrowUp: "UP",
-  ArrowLeft: "LEFT",
-  ArrowRight: "RIGHT",
-  ArrowDown: "DOWN",
+    // Arrow keys
+    ArrowUp: "UP",
+    ArrowLeft: "LEFT",
+    ArrowRight: "RIGHT",
+    ArrowDown: "DOWN",
 
-  // Action buttons
-  KeyZ: "A",
-  Comma: "A",
+    // Action buttons
+    KeyZ: "A",
+    Comma: "A",
 
-  KeyX: "B",
-  Period: "B",
-};
-
-(async () => {
-  const canvas = document.getElementsByTagName("canvas")[0];
-  const [firmware, program] = await Promise.all([
-    fetch(firmwareSource.toString()).then((res) => res.arrayBuffer()),
-    fetch(programSource.toString()).then((res) => res.text()),
-  ]);
-
-  const kalimba = new Kalimba({ canvas, firmware, program });
-  kalimba.start();
+    KeyX: "B",
+    Period: "B",
+  };
 
   const svg = document.querySelector("svg");
   const elementMap = {
@@ -68,4 +60,16 @@ const keyMap = {
     element.addEventListener("mousedown", () => processButton(key, true));
     element.addEventListener("mouseup", () => processButton(key, false));
   });
+};
+
+(async () => {
+  const canvas = document.getElementsByTagName("canvas")[0];
+  const [firmware, program] = await Promise.all([
+    fetch(firmwareSource.toString()).then((res) => res.arrayBuffer()),
+    fetch(programSource.toString()).then((res) => res.text()),
+  ]);
+
+  const kalimba = new Kalimba({ canvas, firmware, program });
+  kalimba.start();
+  installHandlers(kalimba);
 })();
