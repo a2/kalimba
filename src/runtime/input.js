@@ -5,6 +5,6 @@ const Input = {
   DOWN: 6,
   LEFT: 3,
   RIGHT: 5,
-}
+};
 
 export default Input;

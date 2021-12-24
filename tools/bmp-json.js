@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { PNG } = require('pngjs');
+const fs = require("fs");
+const { PNG } = require("pngjs");
 
 function encode(buffer) {
   const png = PNG.sync.read(buffer);
@@ -10,7 +10,7 @@ function encode(buffer) {
     for (let x = 0; x < png.width; x++) {
       const idx = (png.width * y + x) << 2;
       if ((png.data[idx] + png.data[idx + 1] + png.data[idx + 2]) / 3 > 127) {
-        result[page * y + Math.floor(x / 8)] |= 1 << (7 - x % 8);
+        result[page * y + Math.floor(x / 8)] |= 1 << (7 - (x % 8));
       }
     }
   }
@@ -19,7 +19,7 @@ function encode(buffer) {
     width: png.width,
     height: png.height,
     bpp: 1,
-    data: result.toString('base64'),
+    data: result.toString("base64"),
   };
 }
 
