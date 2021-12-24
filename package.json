@@ -1,0 +1,26 @@
+{
+  "name": "kalimba-tinyplane-poc",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Alexsander Akers <me@a2.io>",
+  "license": "ISC",
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "pngjs": "^6.0.0",
+    "rp2040js": "^0.14.6",
+    "uf2": "^1.0.0"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "prettier": "^2.5.1",
+    "val-loader": "^4.0.0",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.1"
+  }
+}
