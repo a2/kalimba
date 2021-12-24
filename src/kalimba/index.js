@@ -15,7 +15,7 @@ export default class Kalimba {
   firmware;
   program;
 
-  constructor(canvas, firmware, program) {
+  constructor({ canvas, firmware, program }) {
     this.canvas = canvas;
     this.firmware = firmware;
     this.program = program;
@@ -135,7 +135,7 @@ export default class Kalimba {
   }
 
   setButton(button, pressed) {
-    const pin = typeof button === 'string' ? Input[button] : button;
+    const pin = typeof button === "string" ? Input[button] : button;
     this.mcu.gpio[pin].setInputValue(!pressed);
   }
 }

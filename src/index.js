@@ -30,7 +30,7 @@ const keyMap = {
     fetch(programSource.toString()).then((res) => res.text()),
   ]);
 
-  const kalimba = new Kalimba(canvas, firmware, program);
+  const kalimba = new Kalimba({ canvas, firmware, program });
   kalimba.start();
 
   const svg = document.querySelector("svg");
