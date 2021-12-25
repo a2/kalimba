@@ -2,9 +2,6 @@ import plane from "./plane";
 import Thumby from "../runtime/thumby";
 
 export default class TinyPlane extends Thumby {
-  scene;
-  fps;
-
   play() {
     this.title();
   }

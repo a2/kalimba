@@ -7,9 +7,6 @@ export default class Thumby {
   static Speaker = Speaker;
   static Input = Input;
   static Button = class {
-    pin;
-    lastState;
-
     constructor(pin) {
       this.pin = pin;
       this.lastState = false;
@@ -31,16 +28,6 @@ export default class Thumby {
       return returnValue;
     }
   };
-
-  lcd;
-  ctx;
-
-  buttonA;
-  buttonB;
-  buttonUp;
-  buttonDown;
-  buttonRight;
-  buttonLeft;
 
   constructor() {
     const allPins = [

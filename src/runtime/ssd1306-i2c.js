@@ -2,15 +2,6 @@ import { BufferedGraphicsContext } from "graphics";
 
 /** SSD1306 class */
 export default class SSD1306 {
-  i2c;
-  width;
-  height;
-  rst;
-  address;
-  extVcc;
-  rotation;
-  context;
-
   constructor(
     i2c,
     {
