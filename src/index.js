@@ -1,4 +1,4 @@
-import { Kalimba, CanvasDisplayAdapter } from "./kalimba";
+import { Kalimba } from "./kalimba";
 
 import firmwareSource from "../static/kaluma-rp2-pico-1.0.0-beta.12.uf2?asset";
 import programSource from "./tinyplane?build";
@@ -69,8 +69,7 @@ const installHandlers = (kalimba) => {
     fetch(programSource).then((res) => res.text()),
   ]);
 
-  const display = new CanvasDisplayAdapter(canvas);
-  const kalimba = new Kalimba({ display, firmware, program });
+  const kalimba = new Kalimba({ canvas, firmware, program });
   kalimba.start();
   installHandlers(kalimba);
 })();

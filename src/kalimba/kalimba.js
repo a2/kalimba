@@ -4,11 +4,12 @@ import { Buffer } from "buffer/";
 import { decodeBlock } from "uf2";
 
 import { bootrom } from "./bootrom";
+import CanvasDisplayAdapter from "./display/canvas";
 import Input from "../runtime/input";
 
 export default class Kalimba {
-  constructor({ display, firmware, program }) {
-    this.display = display;
+  constructor({ canvas, display, firmware, program }) {
+    this.display = display || new CanvasDisplayAdapter(canvas);
     this.firmware = firmware;
     this.program = program;
 
