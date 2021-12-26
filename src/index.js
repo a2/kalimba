@@ -65,8 +65,8 @@ const installHandlers = (kalimba) => {
 (async () => {
   const canvas = document.getElementsByTagName("canvas")[0];
   const [firmware, program] = await Promise.all([
-    fetch(firmwareSource.toString()).then((res) => res.arrayBuffer()),
-    fetch(programSource.toString()).then((res) => res.text()),
+    fetch(firmwareSource).then((res) => res.arrayBuffer()),
+    fetch(programSource).then((res) => res.text()),
   ]);
 
   const display = new CanvasDisplayAdapter(canvas);
